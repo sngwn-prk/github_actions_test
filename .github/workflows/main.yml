@@ -1,0 +1,32 @@
+name: Time Logger
+
+on:
+  schedule:
+    - cron: '*/1 * * * *'  # 1분마다 실행
+  workflow_dispatch:  # 수동 실행도 가능하도록 설정
+
+permissions:
+  contents: write  # 저장소에 쓰기 권한 추가
+
+jobs:
+  log-time:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+    
+    - name: Run time logger script
+      run: |
+        python time_logger.py
+      
+    - name: Commit and push if changed
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add test.txt
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Update time log" && git push) 
