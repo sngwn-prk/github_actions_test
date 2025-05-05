@@ -5,6 +5,9 @@ on:
     - cron: '*/1 * * * *'  # 1분마다 실행
   workflow_dispatch:  # 수동 실행도 가능하도록 설정
 
+permissions:
+  contents: write  # 저장소에 쓰기 권한 추가
+
 jobs:
   log-time:
     runs-on: ubuntu-latest
